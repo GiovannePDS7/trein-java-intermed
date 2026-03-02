@@ -12,7 +12,7 @@
 | 09:00 - 09:15 | 15min | Recap Dia 4 e Introdução ao Dia 5 | Discussão |
 | 09:15 - 09:45 | 30min | Consumo de APIs com Feign Client | Teórico |
 | 09:45 - 10:15 | 30min | Resiliência com Resilience4j (Retry, Circuit Breaker) | Teórico |
-| 10:15 - 10:45 | 30min | CORS — Cross-Origin Resource Sharing | Teórico |
+| 10:15 - 10:45 | 30min | CORS — Cross-Origin Resource Sharing | Teórico (exemplo didático) |
 | 10:45 - 11:00 | 15min | ☕ Coffee Break | - |
 | 11:00 - 11:30 | 30min | Spring Security + JWT (Autenticação Stateless) | Teórico |
 | 11:30 - 12:00 | 30min | Spring Security + JWT (Filter Chain e Autorização) | Teórico |
@@ -183,13 +183,14 @@ public DepartmentResponse departmentFallback(Long id, Exception ex) {
 
 ---
 
+
 ### 3. CORS (Cross-Origin Resource Sharing)
 
-#### O Problema
+#### O que é CORS?
 
-O browser bloqueia chamadas **cross-origin** por segurança. Se seu frontend roda em `localhost:3000` e a API em `localhost:8080`, o browser barra a requisição.
+CORS é uma política de segurança dos navegadores para controlar requisições entre diferentes origens. Mesmo sem frontend neste treinamento, mostramos a configuração para fins didáticos, pois APIs reais costumam ser consumidas por aplicações web ou mobile.
 
-> **Postman não bloqueia** porque não é um browser — CORS é política do browser.
+> **Nota:** Não há frontend React ou Angular neste treinamento. Os exemplos usam origens como `localhost:3000` apenas para ilustrar cenários comuns.
 
 #### Preflight Request (OPTIONS)
 
@@ -207,11 +208,11 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*")
-                .allowCredentials(true)
-                .maxAge(3600);
+            .allowedOrigins("http://localhost:3000") // Exemplo didático, não há frontend neste treinamento
+            .allowedMethods("GET", "POST", "PUT", "DELETE")
+            .allowedHeaders("*")
+            .allowCredentials(true)
+            .maxAge(3600);
     }
 }
 ```

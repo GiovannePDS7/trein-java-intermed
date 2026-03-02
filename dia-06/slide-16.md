@@ -377,7 +377,7 @@ flowchart LR
 | 3 | Cachear listagem de funcionários com TTL de 5 minutos e `@CacheEvict` no create | ⭐⭐ | Redis, @Cacheable |
 | 4 | Criar segundo consumer que gera log de auditoria ao criar funcionário (mesma fila, outro bean) | ⭐⭐ | RabbitMQ, @RabbitListener |
 | 5 | Implementar `@CachePut` no update de departamento (atualizar sem invalidar tudo) | ⭐⭐⭐ | Redis avançado |
-| 6 | Configurar DLQ para `employee-notifications` e testar com exception forçada | ⭐⭐⭐ | RabbitMQ DLQ |
+| 6 | Configurar DLQ para `employee-not.ifications` e testar com exception forçada | ⭐⭐⭐ | RabbitMQ DLQ |
 
 ---
 
