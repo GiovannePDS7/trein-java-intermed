@@ -1,22 +1,19 @@
 # ── Stage 1: Build ──────────────────────────────────────────
-FROM docker.io/library/eclipse-temurin:21-jdk-alpine AS build
+FROM docker.io/library/maven:3.9-eclipse-temurin-21-alpine AS build
 
 WORKDIR /app
 
 # Copiar arquivos de dependência primeiro (cache de camadas)
 COPY pom.xml .
-COPY .mvn .mvn
-COPY mvnw .
-RUN chmod +x mvnw
 
 # Baixar dependências (camada cacheada)
-RUN ./mvnw dependency:resolve -q
+RUN mvn dependency:resolve -q
 
 # Copiar código-fonte
 COPY src ./src
 
 # Build do projeto (sem testes)
-RUN ./mvnw clean package -DskipTests -q
+RUN mvn clean package -DskipTests -q
 
 # ── Stage 2: Runtime ───────────────────────────────────────
 FROM docker.io/library/eclipse-temurin:21-jre-alpine
