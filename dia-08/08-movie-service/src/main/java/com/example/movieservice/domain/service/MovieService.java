@@ -1,8 +1,11 @@
 package com.example.movieservice.domain.service;
 
+<<<<<<< Updated upstream
 import com.example.movieservice.adapter.out.persistence.entity.FavoriteEntity;
 import com.example.movieservice.domain.exception.MaxFavoritesException;
 import com.example.movieservice.domain.exception.MovieAlreadyFavoritedException;
+=======
+>>>>>>> Stashed changes
 import com.example.movieservice.domain.model.Movie;
 import com.example.movieservice.domain.model.MovieCredits;
 import com.example.movieservice.domain.model.MoviePage;
@@ -56,15 +59,54 @@ public class MovieService implements MovieUseCasePort /* TODO 4: implementar os 
         this.watchLaterRepository = watchLaterRepository;
     }
 
-    // TODO 4: Implementar os métodos do MovieUseCasePort aqui
-    //
-    // Exemplo de implementação do searchMovies:
-    //
     @Override
     public MoviePage searchMovies(String query, int page) {
         log.info("Buscando filmes com query='{}', page={}", query, page);
         return movieApiPort.searchMovies(query, page);
     }
+
+    @Override
+    public Movie getMovieDetails(Long movieId, String userId){
+        log.info("Buscando filmes com movieId='{}', userId={}", movieId, userId);
+
+        Movie movie = movieApiPort.getMovieDetails(movieId);
+        boolean watchLater = watchLaterRepository.existsByMovieIdAndUserId(movieId, userId);
+        boolean favorite = favoriteRepository.existsByMovieIdAndUserId(movieId, userId);
+
+
+
+        return new Movie(
+                movie.id(),
+                movie.title(),
+                movie.overview(),
+                movie.posterPath(),
+                movie.backdropPath(),
+                movie.releaseDate(),
+                movie.voteAverage(),
+                movie.voteCount(),
+                movie.popularity(),
+                favorite,
+                watchLater
+        );
+    }
+
+
+
+    public MoviePage getPopularMovies(int page){
+        MoviePage foundMoviesInPage = movieApiPort.getPopularMovies(page);
+
+        return foundMoviesInPage;
+    }
+
+    public MovieCredits getMovieCredits(Long movieId){
+        MovieCredits foundMovieCredits = movieApiPort.getMovieCredits(movieId);
+
+        return foundMovieCredits;
+    }
+
+    // TODO 4: Implementar os métodos do MovieUseCasePort aqui
+    //
+    // Exemplo de implementação do searchMovies:
     //
     // Exemplo de implementação do addFavorite:
     //
@@ -130,46 +172,5 @@ public class MovieService implements MovieUseCasePort /* TODO 4: implementar os 
                 });
     }
 
-    @Override
-    public Movie getMovieDetails(Long movieId, Long userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMovieDetails'");
-    }
-
-    @Override
-    public MoviePage getPopularMovies(int page) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPopularMovies'");
-    }
-
-    @Override
-    public MovieCredits getMovieCredits(Long movieId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMovieCredits'");
-    }
-
-    @Override
-    public void addFavorite(Long movieId, Long userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addFavorite'");
-    }
-
-    @Override
-    public void removeFavorite(Long movieId, Long userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeFavorite'");
-    }
-
-    @Override
-    public Page<Movie> getFavorites(Long userId, Pageable pageable) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFavorites'");
-    }
-
-    @Override
-    public void addWatchLater(Long movieId, Long userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addWatchLater'");
-    }
 }
 

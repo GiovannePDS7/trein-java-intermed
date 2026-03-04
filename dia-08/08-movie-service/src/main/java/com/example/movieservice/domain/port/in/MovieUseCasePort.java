@@ -41,18 +41,18 @@ public interface MovieUseCasePort {
 
     MoviePage searchMovies(String query, int page);
 
-    Movie getMovieDetails(Long movieId, Long userId);
+    Movie getMovieDetails(Long movieId, String userId);
 
     MoviePage getPopularMovies(int page);
 
     MovieCredits getMovieCredits(Long movieId);
 
-    void addFavorite(Long movieId, Long userId);
+    void addFavorite(Long movieId, String userId);
 
-    void removeFavorite(Long movieId, Long userId);
+    void removeFavorite(Long movieId, String userId);
 
-    Page<Movie> getFavorites(Long userId, Pageable pageable);
+    Page<Movie> getFavorites(String userId, Pageable pageable);
 
-    void addWatchLater(Long movieId, Long userId);
+    void addWatchLater(Long movieId, String userId);
 
 }
