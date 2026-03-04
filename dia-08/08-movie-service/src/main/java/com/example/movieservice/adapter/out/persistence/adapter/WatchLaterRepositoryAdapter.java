@@ -26,6 +26,14 @@ public class WatchLaterRepositoryAdapter implements WatchLaterRepositoryPort {
     }
 
     @Override
+    public void save(Long movieId, String userId) {
+        WatchLaterEntity entity = new WatchLaterEntity();
+        entity.setMovieId(movieId);
+        entity.setUserId(userId);
+        jpaRepository.save(entity);
+    }
+
+    @Override
     public Optional<WatchLaterEntity> findByMovieIdAndUserId(Long movieId, String userId) {
         return jpaRepository.findByMovieIdAndUserId(movieId, userId);
     }
