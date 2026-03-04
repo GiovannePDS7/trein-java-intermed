@@ -2,7 +2,14 @@ package com.example.movieservice.adapter.in.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.movieservice.domain.model.MoviePage;
+import com.example.movieservice.domain.port.in.MovieUseCasePort;
+
+import io.swagger.v3.oas.annotations.Operation;
 
 // TODO 5: Criar MovieController seguindo o contrato Swagger (openapi.yaml)
 //
@@ -44,26 +51,26 @@ public class MovieController {
     //
     // Exemplo de implementação do search:
     //
-    // private final MovieUseCasePort movieUseCase;
-    //
-    // public MovieController(MovieUseCasePort movieUseCase) {
-    //     this.movieUseCase = movieUseCase;
-    // }
-    //
-    // @GetMapping("/search")
-    // @Operation(summary = "Buscar filmes por texto")
-    // public ResponseEntity<MoviePage> searchMovies(
-    //         @RequestParam String query,
-    //         @RequestParam(defaultValue = "1") int page) {
-    //     log.info("Buscando filmes: query='{}', page={}", query, page);
-    //     return ResponseEntity.ok(movieUseCase.searchMovies(query, page));
-    // }
-    //
-    // @PostMapping("/{id}/favorite")
-    // @Operation(summary = "Favoritar um filme")
-    // public ResponseEntity<Void> addFavorite(@PathVariable Long id) {
-    //     String userId = "user-1"; // TODO 12: extrair do JWT
-    //     movieUseCase.addFavorite(id, userId);
-    //     return ResponseEntity.status(HttpStatus.CREATED).build();
-    // }
+    private final MovieUseCasePort movieUseCase;
+    
+    public MovieController(MovieUseCasePort movieUseCase) {
+        this.movieUseCase = movieUseCase;
+    }
+    
+    @GetMapping("/search")
+    @Operation(summary = "Buscar filmes por texto")
+    public ResponseEntity<MoviePage> searchMovies(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "1") int page) {
+        log.info("Buscando filmes: query='{}', page={}", query, page);
+        return ResponseEntity.ok(movieUseCase.searchMovies(query, page));
+    }
+    
+    @PostMapping("/{id}/favorite")
+    @Operation(summary = "Favoritar um filme")
+    public ResponseEntity<Void> addFavorite(@PathVariable Long id) {
+        String userId = "user-1"; // TODO 12: extrair do JWT
+        movieUseCase.addFavorite(id, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }
