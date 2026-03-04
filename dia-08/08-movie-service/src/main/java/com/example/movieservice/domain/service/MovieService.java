@@ -1,11 +1,7 @@
 package com.example.movieservice.domain.service;
-
-<<<<<<< Updated upstream
 import com.example.movieservice.adapter.out.persistence.entity.FavoriteEntity;
 import com.example.movieservice.domain.exception.MaxFavoritesException;
 import com.example.movieservice.domain.exception.MovieAlreadyFavoritedException;
-=======
->>>>>>> Stashed changes
 import com.example.movieservice.domain.model.Movie;
 import com.example.movieservice.domain.model.MovieCredits;
 import com.example.movieservice.domain.model.MoviePage;
@@ -73,21 +69,7 @@ public class MovieService implements MovieUseCasePort /* TODO 4: implementar os 
         boolean watchLater = watchLaterRepository.existsByMovieIdAndUserId(movieId, userId);
         boolean favorite = favoriteRepository.existsByMovieIdAndUserId(movieId, userId);
 
-
-
-        return new Movie(
-                movie.id(),
-                movie.title(),
-                movie.overview(),
-                movie.posterPath(),
-                movie.backdropPath(),
-                movie.releaseDate(),
-                movie.voteAverage(),
-                movie.voteCount(),
-                movie.popularity(),
-                favorite,
-                watchLater
-        );
+        return buildMovieWithUserFlags(movie, favorite, watchLater);
     }
 
 
@@ -160,16 +142,25 @@ public class MovieService implements MovieUseCasePort /* TODO 4: implementar os 
         return favoriteRepository.findByUserId(userId, pageable)
                 .map(entity -> {
                     Movie movie = movieApiPort.getMovieDetails(entity.getMovieId());
-                    return new Movie(
-                            movie.id(),
-                            entity.getTitle(),
-                            entity.getPosterPath(),
-                            entity.getOverview(),
-                            entity.getVoteAverage(),
-                            true, // favorito
-                            watchLaterRepository.existsByMovieIdAndUserId(entity.getMovieId(), userId)
-                    );
+                    boolean watchLater = watchLaterRepository.existsByMovieIdAndUserId(entity.getMovieId(), userId);
+                    return buildMovieWithUserFlags(movie, true, watchLater);
                 });
+    }
+
+    private Movie buildMovieWithUserFlags(Movie movie, boolean favorite, boolean watchLater) {
+        return new Movie(
+                movie.id(),
+                movie.title(),
+                movie.overview(),
+                movie.posterPath(),
+                movie.backdropPath(),
+                movie.releaseDate(),
+                movie.voteAverage(),
+                movie.voteCount(),
+                movie.popularity(),
+                favorite,
+                watchLater
+        );
     }
 
 }
